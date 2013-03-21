@@ -72,8 +72,7 @@ public class ValidatingVisitor implements ChangeSetVisitor {
         return ChangeSetVisitor.Direction.FORWARD;
     }
 
-    public void visit(ChangeSet changeSet, DatabaseChangeLog databaseChangeLog, Database database) {
-        System.out.println(changeSet.toString(false));
+    public void visit(ChangeSet changeSet, DatabaseChangeLog databaseChangeLog, Database database) {        
         RanChangeSet ranChangeSet = ranIndex.get(changeSet.toString(false));
         boolean ran = ranChangeSet != null;
         boolean shouldValidate = !ran || changeSet.shouldRunOnChange() || changeSet.shouldAlwaysRun();

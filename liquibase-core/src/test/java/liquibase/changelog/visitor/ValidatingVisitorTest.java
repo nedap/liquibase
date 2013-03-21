@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import liquibase.change.ChangeParameterMetaData;
 import liquibase.database.Database;
 import liquibase.exception.ValidationErrors;
 import liquibase.logging.LogFactory;

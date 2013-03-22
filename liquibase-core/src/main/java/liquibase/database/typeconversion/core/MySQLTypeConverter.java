@@ -38,12 +38,27 @@ public class MySQLTypeConverter extends AbstractTypeConverter {
     public NumberType getNumberType() {
         return new NumberType("NUMERIC");
     }
-    
+
     @Override
     protected DataType getDataType(String columnTypeString, Boolean autoIncrement, String dataTypeName, String precision, String additionalInformation) {
-        if (columnTypeString.equalsIgnoreCase("timestamp")) {
+         // Translate type to database-specific type, if possible
+        DataType returnTypeName = null;
+
+        if (dataTypeName.equalsIgnoreCase("TEXT")) {
+            returnTypeName = new ClobType("TEXT");
+        } else if (dataTypeName.equalsIgnoreCase("CLOB")) {
+            returnTypeName = new ClobType("LONGTEXT");
+        } else if (columnTypeString.equalsIgnoreCase("timestamp")) {
+            //this was already in the original mysqlconverter without the addprecision, so i left it intact
             return new DateTimeType("TIMESTAMP");
+        } else {
+            return super.getDataType(columnTypeString, autoIncrement,
+                    dataTypeName, precision, additionalInformation);
         }
-        return super.getDataType(columnTypeString, autoIncrement, dataTypeName, precision, additionalInformation);
+
+        addPrecisionToType(precision, returnTypeName);
+        returnTypeName.setAdditionalInformation(additionalInformation);
+
+        return returnTypeName;
     }
 }
